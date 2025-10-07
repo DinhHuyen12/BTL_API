@@ -82,6 +82,91 @@ namespace QuanLyThuVien.Controllers
                 data = result
             });
         }
+		/// <summary>
+		/// Cập nhật thông tin user
+		/// </summary>
+		[HttpPut("update-user")]
+		public IActionResult UpdateUser([FromBody] Users user)
+		{
+			if (user == null || user.UserId <= 0)
+				return BadRequest(new { message = "Thông tin user không hợp lệ" });
 
-    }
+			var result = _authBusiness.UpdateUser(user);
+			Console.WriteLine(result);
+
+			if (result == null)
+				return StatusCode(StatusCodes.Status500InternalServerError,
+					new { message = "Có lỗi khi cập nhật user (result null)" });
+
+			// Lấy error code
+			int errorCode = 0;
+			string errorMessage = string.Empty;
+
+			if (result.ContainsKey("ErrorCode"))
+				errorCode = Convert.ToInt32(result["ErrorCode"]);
+
+			if (result.ContainsKey("Message"))
+				errorMessage = result["Message"]?.ToString();
+
+			if (errorCode != 0)
+			{
+				return BadRequest(new
+				{
+					message = "Cập nhật user thất bại",
+					errorCode,
+					errorMessage
+				});
+			}
+
+			return Ok(new
+			{
+				message = "Cập nhật user thành công",
+				data = result
+			});
+		}
+
+		/// <summary>
+		/// Xóa user theo Id
+		/// </summary>
+		[HttpDelete("delete-user/{userId}")]
+		public IActionResult DeleteUser(int userId)
+		{
+			if (userId <= 0)
+				return BadRequest(new { message = "UserId không hợp lệ" });
+
+			var result = _authBusiness.DeleteUser(userId);
+
+			if (result == null)
+				return StatusCode(StatusCodes.Status500InternalServerError,
+					new { message = "Có lỗi khi xóa user (result null)" });
+
+			int errorCode = 0;
+			string errorMessage = string.Empty;
+
+			if (result.ContainsKey("ErrorCode"))
+				errorCode = Convert.ToInt32(result["ErrorCode"]);
+
+			if (result.ContainsKey("Message"))
+				errorMessage = result["Message"]?.ToString();
+
+			if (errorCode != 0)
+			{
+				return BadRequest(new
+				{
+					message = "Xóa user thất bại",
+					errorCode,
+					errorMessage
+				});
+			}
+
+			return Ok(new
+			{
+				message = "Xóa user thành công",
+				data = result
+			});
+		}
+
+
+
+	}
 }

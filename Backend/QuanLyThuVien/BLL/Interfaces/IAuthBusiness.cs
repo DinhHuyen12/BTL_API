@@ -13,7 +13,7 @@ namespace BLL.Interfaces
 
         public Dictionary<string,object> CreateUser(Users user);
 
-        public bool UpdateUser(Users user);
-        public bool DeleteUser(Users user);
-    }
+        public Dictionary<string, object> UpdateUser(Users user);
+        public Dictionary<string, object> DeleteUser(int userId);
+	}
 }
