@@ -11,7 +11,9 @@ builder.Services.AddControllers();
 
 // ✅ Đăng ký Dependency Injection
 builder.Services.AddScoped<IAuthBusiness, AuthBusiness>();
+builder.Services.AddScoped<IUserService, UserService>();    
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IDataHelper, DataHelper>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

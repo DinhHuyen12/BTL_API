@@ -32,14 +32,26 @@ namespace BLL
             return _authRepository.CreateUser(user);
         }
 
-        public bool UpdateUser(Users user)
-        {
-            return _authRepository.UpdateUser(user);
-        }
+		//public Dictionary<string, object> UpdateUser(Users user)
+		//{
+		//    return _authRepository.UpdateUser(user);
+		//}
+		public Dictionary<string, object> UpdateUser(Users user)
+		{
+			// Nếu bạn muốn cho phép update mật khẩu thì hash lại:
+			if (!string.IsNullOrEmpty(user.PasswordHash))
+			{
+				user.PasswordHash = PasswordHelper.HashPassword(user.PasswordHash);
+			}
 
-        public bool DeleteUser(Users user)
-        {
-            return _authRepository.DeleteUser(user);
-        }
-    }
+			return _authRepository.UpdateUser(user);
+		}
+
+
+		public Dictionary<string, object> DeleteUser(int userId)
+		{
+			return _authRepository.DeleteUser(userId);
+		}
+
+	}
 }
