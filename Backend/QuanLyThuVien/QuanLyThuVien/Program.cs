@@ -23,6 +23,7 @@ builder.Services.AddTransient<IDatabaseHelper, DatabaseHelper>();
 builder.Services.AddTransient<IBookRepository, BookRepository>();
 builder.Services.AddTransient<IBookCopiesRepository, BookCopiesRepository>();
 builder.Services.AddTransient<IBookCopiesBusiness, BookCopiesBusiness>();
+
 builder.Services.AddTransient<IShelvesRepository, BookshelvesRepository>();
 builder.Services.AddTransient<IBookshelvesBusiness, BookshelvesBusiness>();
 
