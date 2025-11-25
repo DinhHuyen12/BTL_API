@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-
+using BCrypt.Net;
 
 
 namespace DAL.Helper
@@ -11,7 +11,7 @@ namespace DAL.Helper
 	{
 		protected string connectString = @"Server=HYSHR;Database=QuanLyThuVien;Trusted_Connection=True;TrustServerCertificate=True;";
 		SqlConnection connection;
-
+		
 		public DataHelper()
 		{
 			connection = new SqlConnection(connectString);
@@ -46,6 +46,56 @@ namespace DAL.Helper
 				connection.Close();
 			}
 		}
+
+		public DataTable ExecuteReaderWithOutput(string procedureName, Dictionary<string, object> inputParams, List<SqlParameter> outputParams)
+		{
+			DataTable tb = new DataTable();
+			try
+			{
+				using (SqlCommand cmd = new SqlCommand(procedureName, connection))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					Open();
+
+					// Thêm input params
+					if (inputParams != null)
+					{
+						foreach (var kv in inputParams)
+						{
+							cmd.Parameters.AddWithValue(kv.Key, kv.Value ?? DBNull.Value);
+						}
+					}
+
+					// Thêm output params
+					if (outputParams != null)
+					{
+						foreach (var p in outputParams)
+						{
+							p.Direction = ParameterDirection.Output;
+							cmd.Parameters.Add(p);
+						}
+					}
+
+					using (var reader = cmd.ExecuteReader())
+					{
+						tb.Load(reader);
+					}
+
+					// output params sẽ được lấy ở caller
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("ExecuteReaderWithOutput error: " + ex.Message);
+				tb = null;
+			}
+			finally
+			{
+				Close();
+			}
+			return tb;
+		}
+
 
 		// Đọc dữ liệu (SELECT)
 		public DataTable ExcuteReader(string procedureName, params object[] param_list)

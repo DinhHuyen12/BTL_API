@@ -54,63 +54,7 @@ namespace DAL
 			);
 		}
 
-		//public Users ValidateResetToken(string token)
-		//{
-		//	var param = new Dictionary<string, object>
-		//	{
-		//		{ "@Token", token }
-		//	};
-
-		//	var dt = _dbHelper.ExcuteReader(
-		//		"SELECT * FROM Users WHERE PasswordResetToken=@Token AND TokenExpiry > GETDATE()",
-		//		param,
-		//		CommandType.Text
-		//	);
-
-		//	if (dt != null && dt.Rows.Count > 0)
-		//	{
-		//		return MapToUser(dt.Rows[0]);
-		//	}
-		//	return null;
-		//}
-		//public Users ValidateResetToken(string token)
-		//{
-		//	var param = new Dictionary<string, object>
-		//	{
-		//		{ "@Token", token }
-		//	};
-
-		//	var dt = _dbHelper.ExcuteReader(
-		//		"Pro_ValidateResetToken",  // Gọi tên thủ tục
-		//		param,
-		//		CommandType.StoredProcedure // Dùng stored procedure
-		//	);
-
-		//	if (dt != null && dt.Rows.Count > 0)
-		//	{
-		//		return MapToUser(dt.Rows[0]);
-		//	}
-		//	return null;
-		//}
-		//public Users ValidateResetToken(string token)
-		//{
-		//	var param = new Dictionary<string, object>
-		//	{
-		//		{ "Token", token } // bỏ dấu @
-		//	};
-
-		//	var dt = _dbHelper.ExcuteReader(
-		//		"Pro_ValidateResetToken",
-		//		param,
-		//		CommandType.StoredProcedure
-		//	);
-
-		//	if (dt != null && dt.Rows.Count > 0)
-		//	{
-		//		return MapToUser(dt.Rows[0]);
-		//	}
-		//	return null;
-		//}
+		
 		public Users ValidateResetToken(string token)
 		{
 			var param = new Dictionary<string, object>

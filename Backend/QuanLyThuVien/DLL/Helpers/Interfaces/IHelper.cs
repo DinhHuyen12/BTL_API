@@ -11,5 +11,8 @@ namespace DAL.Helper
 		DataTable ExcuteReader(string procedureName, params object[] paramList);
 
 		Dictionary<string, object> ExcuteNonQuery(string procedureName, Dictionary<string, object> inputParams, List<SqlParameter> outputParams = null);
+
+		DataTable ExecuteReaderWithOutput(string procedureName, Dictionary<string, object> inputParams, List<SqlParameter> outputParams);
+
 	}
 }

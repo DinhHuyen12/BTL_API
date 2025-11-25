@@ -15,5 +15,12 @@ namespace BLL.Interfaces
 
         public Dictionary<string, object> UpdateUser(Users user);
         public Dictionary<string, object> DeleteUser(int userId);
+
+		bool SendTwoFactorCode(string email);
+		bool VerifyTwoFactorCode(string email, string code);
+		bool GenerateTwoFactorCode(string email);
+		Users GetUserByEmail(string email);
+		string GenerateJwtToken(Users user);
+
 	}
 }
