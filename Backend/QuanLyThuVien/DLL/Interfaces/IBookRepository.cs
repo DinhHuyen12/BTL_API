@@ -8,6 +8,7 @@ namespace baiapi1.DAL.Interfaces
     {
         List<book> GetAll();
         book GetById(int id);
+        
         List<book> GetByCate(string TheLoai);
 
         book ten(string sach);
