@@ -3,29 +3,35 @@ using Model;
 using DAL.Interfaces;
 using System;
 using Helper;
-
+using System.Security.Claims;
+using System.Text;
 namespace BLL
 {
     public class AuthBusiness : IAuthBusiness
     {
         private readonly IAuthRepository _authRepository;
 
-        public AuthBusiness(IAuthRepository authRepository)
+
+		public AuthBusiness(IAuthRepository authRepository)
         {
             _authRepository = authRepository;
         }
 
-        public Users Login(string username,string password)
+        public Users Login(string username, string password)
         {
             // Lấy user từ DB
             var user = _authRepository.Login(username);
             if (user == null) return null;
-            
-            bool isValid = PasswordHelper.VerifyPassword(password, user.PasswordHash);
-            return isValid ? user : null;
-        }
 
-        public Dictionary<string,object> CreateUser(Users user)
+			bool isValid = PasswordHelper.VerifyPassword(password, user.PasswordHash);
+			return isValid ? user : null;
+
+			
+
+		}
+		
+
+		public Dictionary<string,object> CreateUser(Users user)
         {
      
             user.PasswordHash = PasswordHelper.HashPassword(user.PasswordHash);
@@ -52,6 +58,34 @@ namespace BLL
 		{
 			return _authRepository.DeleteUser(userId);
 		}
+
+		public bool SendTwoFactorCode(string email)
+		{
+			return _authRepository.GenerateTwoFactorCode(email);
+		}
+
+		public bool VerifyTwoFactorCode(string email, string code)
+		{
+			return _authRepository.VerifyTwoFactorCode(email, code);
+		}
+
+		public Users GetUserByEmail(string email)
+		{
+			return _authRepository.GetUserByEmail(email);
+		}
+
+		public string GenerateJwtToken(Users user)
+		{
+			// Nếu DAL có private GenerateJwtToken, bạn có thể expose nó qua public method trong DAL.
+			return _authRepository.GenerateJwtToken(user);
+		}
+		// ✅ Bổ sung mới cho xác thực 2 bước
+		public bool GenerateTwoFactorCode(string email)
+		{
+			return _authRepository.GenerateTwoFactorCode(email);
+		}
+
+
 
 	}
 }

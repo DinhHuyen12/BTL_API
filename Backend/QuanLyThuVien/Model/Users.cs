@@ -17,5 +17,7 @@ namespace Model
         public string? RoleName { get; set; }
 		public string? PasswordResetToken { get; set; }
 		public DateTime? TokenExpiry { get; set; }
+		public string? token { get; set; }
+
 	}
 }

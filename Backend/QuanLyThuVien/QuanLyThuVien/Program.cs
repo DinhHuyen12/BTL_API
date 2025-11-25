@@ -15,6 +15,19 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IDataHelper, DataHelper>();
+// 👇 Bật CORS
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowAngularApp",
+		policy =>
+		{
+			policy.WithOrigins("http://127.0.0.1:5500") // frontend của bạn
+				  .AllowAnyHeader()
+				  .AllowAnyMethod()
+				  .AllowCredentials(); // nếu dùng cookie
+		});
+});
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -28,6 +41,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+// 👇 Enable CORS trước Authorization
+app.UseCors("AllowAngularApp");
 
 app.UseHttpsRedirection();
 
