@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Library Manager</title>
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-route.js"></script>
+
+    <!-- CSS Template -->
+    <link rel="stylesheet" href="assets/css/app.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+
+<body>
+
+    <div ng-view></div>
+
+    <!-- APP JS -->
+    <script src="app/app.js"></script>
+    <script src="app/routes.js"></script>
+
+    <!-- SERVICES -->
+    <script src="app/services/apiService.js"></script>
+    <script src="app/services/authService.js"></script>
+    <script src="app/services/userService.js"></script>
+
+    <!-- CONTROLLERS -->
+    <script src="app/controllers/AuthController.js"></script>
+    <script src="app/controllers/verifyOtpController.js"></script>
+    <script src="app/controllers/LayoutController.js"></script>
+    <script src="app/controllers/HeaderController.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+  <title>Xác thực OTP</title>
+
+  <!-- CSS Otika -->
+  <link rel="stylesheet" href="assets/css/app.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+
+  <!-- iziToast -->
+  <link rel="stylesheet" href="assets/bundles/izitoast/css/iziToast.min.css">
+
+</head>
+
+<body>
+
+  <!-- <div class="loader"></div> -->
+
+  <div id="app">
+    <section class="section">
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+
+            <div class="card card-primary">
+              <div class="card-header">
+                <h4>Nhập mã OTP</h4>
+              </div>
+
+              <div class="card-body">
+
+                <p class="text-muted">
+                  Mã OTP đã được gửi tới email:
+                  <strong id="verifyEmail"></strong>
+                </p>
+
+                <form id="otpForm" class="needs-validation" novalidate="">
+
+                  <div class="form-group">
+                    <label for="otp">Mã OTP</label>
+                    <input id="otp" type="text" class="form-control" maxlength="6" required>
+                    <div class="invalid-feedback">
+                      Vui lòng nhập mã OTP!
+                    </div>
+                  </div>
+
+                  <div class="form-group mt-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">
+                      Xác nhận OTP
+                    </button>
+                  </div>
+
+                </form>
+
+              </div>
+            </div>
+
+            <div class="mt-5 text-muted text-center">
+              <a href="login.html">Quay lại đăng nhập</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- JS -->
+  <script src="assets/js/app.min.js"></script>
+  <script src="assets/bundles/izitoast/js/iziToast.min.js"></script>
+
+  <script src="js/api.js"></script>
+  <script src="js/verify.js"></script>
+
+</body>
+
+</html>

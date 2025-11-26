@@ -96,7 +96,7 @@ namespace BLL
 		//}
 		private void SendResetEmail(string email, string token)
 		{
-			var resetLink = $"https://yourdomain.com/reset?token={token}";
+			var resetLink = $"http://127.0.0.1:5500/reset-password.html?token={token}";
 
 			var message = new MimeMessage();
 			message.From.Add(new MailboxAddress("Shop ThienThanNho", "contact.dev24h@gmail.com"));

@@ -83,12 +83,13 @@ namespace QuanLyThuVien.Controllers
 			// ✅ Gửi mã OTP tới email user
 			bool sent = _authBusiness.GenerateTwoFactorCode(user.Email);
 			if (!sent)
-				return StatusCode(500, new { message = "Không thể gửi mã OTP. Vui lòng thử lại." });
+				return StatusCode(500, new { success = false, message = "Không thể gửi mã OTP. Vui lòng thử lại." });
 
 			Console.WriteLine($"[LOGIN SUCCESS] Gửi OTP tới: {user.Email}");
 
 			return Ok(new
 			{
+				success = true,
 				message = "Đăng nhập bước 1 thành công. OTP đã được gửi đến email.",
 				email = user.Email
 			});
@@ -106,7 +107,7 @@ namespace QuanLyThuVien.Controllers
 				!parameters.ContainsKey("email") ||
 				!parameters.ContainsKey("code"))
 			{
-				return BadRequest(new { message = "Thiếu email hoặc mã OTP" });
+				return BadRequest(new { success = false, message = "Thiếu email hoặc mã OTP" });
 			}
 
 			string email = parameters["email"];
@@ -114,17 +115,18 @@ namespace QuanLyThuVien.Controllers
 
 			bool verified = _authBusiness.VerifyTwoFactorCode(email, code);
 			if (!verified)
-				return BadRequest(new { message = "Mã OTP không hợp lệ hoặc đã hết hạn." });
+				return BadRequest(new { success = false, message = "Mã OTP không hợp lệ hoặc đã hết hạn." });
 
 			// Khi OTP hợp lệ → trả JWT token cho frontend lưu
 			var user = _authBusiness.GetUserByEmail(email);
 			if (user == null)
-				return NotFound(new { message = "Không tìm thấy người dùng." });
+				return NotFound(new { success = false, message = "Không tìm thấy người dùng." });
 
 			string token = _authBusiness.GenerateJwtToken(user);
 
 			return Ok(new
 			{
+				success = true,
 				message = "Xác minh OTP thành công",
 				token,
 				user
@@ -139,13 +141,13 @@ namespace QuanLyThuVien.Controllers
         public IActionResult Register([FromBody] Users user)
         {
             if (user == null || string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.PasswordHash))
-                return BadRequest(new { message = "Thông tin user không hợp lệ" });
+                return BadRequest(new { success = false, message = "Thông tin user không hợp lệ" });
 
             var result = _authBusiness.CreateUser(user);
             Console.WriteLine(result);
             if (result == null)
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { message = "Có lỗi khi tạo user (result null)" });
+                    new { success = false, message = "Có lỗi khi tạo user (result null)" });
 
             // Lấy error code
             int errorCode = 0;
@@ -161,15 +163,17 @@ namespace QuanLyThuVien.Controllers
             {
                 return BadRequest(new
                 {
-                    message = "Tạo user thất bại",
+					success = false,
+					message = "Tạo user thất bại",
                     errorCode,
                     errorMessage
                 });
             }
 
             return Ok(new
-            {
-                message = "Tạo user thành công",
+			{
+				success = true,
+				message = "Tạo user thành công",
                 data = result
             });
         }
@@ -180,14 +184,14 @@ namespace QuanLyThuVien.Controllers
 		public IActionResult UpdateUser([FromBody] Users user)
 		{
 			if (user == null || user.UserId <= 0)
-				return BadRequest(new { message = "Thông tin user không hợp lệ" });
+				return BadRequest(new { success = false, message = "Thông tin user không hợp lệ" });
 
 			var result = _authBusiness.UpdateUser(user);
 			Console.WriteLine(result);
 
 			if (result == null)
 				return StatusCode(StatusCodes.Status500InternalServerError,
-					new { message = "Có lỗi khi cập nhật user (result null)" });
+					new { success = false, message = "Có lỗi khi cập nhật user (result null)" });
 
 			// Lấy error code
 			int errorCode = 0;
@@ -203,6 +207,7 @@ namespace QuanLyThuVien.Controllers
 			{
 				return BadRequest(new
 				{
+					success = false,
 					message = "Cập nhật user thất bại",
 					errorCode,
 					errorMessage
@@ -211,6 +216,8 @@ namespace QuanLyThuVien.Controllers
 
 			return Ok(new
 			{
+				success = true,
+
 				message = "Cập nhật user thành công",
 				data = result
 			});
@@ -223,13 +230,13 @@ namespace QuanLyThuVien.Controllers
 		public IActionResult DeleteUser(int userId)
 		{
 			if (userId <= 0)
-				return BadRequest(new { message = "UserId không hợp lệ" });
+				return BadRequest(new { success = false, message = "UserId không hợp lệ" });
 
 			var result = _authBusiness.DeleteUser(userId);
 
 			if (result == null)
 				return StatusCode(StatusCodes.Status500InternalServerError,
-					new { message = "Có lỗi khi xóa user (result null)" });
+					new { success = false, message = "Có lỗi khi xóa user (result null)" });
 
 			int errorCode = 0;
 			string errorMessage = string.Empty;
@@ -244,6 +251,7 @@ namespace QuanLyThuVien.Controllers
 			{
 				return BadRequest(new
 				{
+					success = false,
 					message = "Xóa user thất bại",
 					errorCode,
 					errorMessage
@@ -252,8 +260,53 @@ namespace QuanLyThuVien.Controllers
 
 			return Ok(new
 			{
+				success = true,
 				message = "Xóa user thành công",
 				data = result
+			});
+		}
+		// ==========================================================
+		// 6. VALIDATE TOKEN – KIỂM TRA TOKEN CÒN HẠN KHÔNG
+		// ==========================================================
+		[Authorize]
+		[HttpGet("validate-token")]
+		public IActionResult ValidateToken()
+		{
+			string authHeader = Request.Headers["Authorization"];
+
+			if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+				return Unauthorized(new { success = false, message = "Token không tồn tại" });
+
+			string token = authHeader.Substring("Bearer ".Length).Trim();
+
+			var user = _authBusiness.ValidateJwtToken(token);
+
+			if (user == null)
+				return Unauthorized(new { success = false, message = "Token không hợp lệ hoặc đã hết hạn" });
+
+			return Ok(new
+			{
+				success = true,
+				message = "Token hợp lệ",
+				user
+			});
+		}
+		/// <summary>
+		/// Lấy danh sách toàn bộ user
+		/// </summary>
+		[HttpGet("get-all-users")]
+		public IActionResult GetAllUsers()
+		{
+			var users = _authBusiness.GetAllUsers();
+
+			if (users == null || users.Count == 0)
+				return NotFound(new { success = false, message = "Không có người dùng nào." });
+
+			return Ok(new
+			{
+				success = true,
+				message = "Lấy danh sách người dùng thành công",
+				data = users
 			});
 		}
 
