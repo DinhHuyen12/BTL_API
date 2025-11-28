@@ -1,4 +1,4 @@
-﻿namespace baiapi1.Models
+﻿namespace QuanLyThuVien.Models
 {
     public class book
     {

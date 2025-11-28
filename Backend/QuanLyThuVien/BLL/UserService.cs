@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using MailKit.Net.Smtp;
 using MimeKit;
+using Helper;
 
 namespace BLL
 {
@@ -62,7 +63,8 @@ namespace BLL
 				return response;
 			}
 
-			string hashed = HashPassword(newPassword);
+			//string hashed = HashPassword(newPassword);
+			string hashed = PasswordHelper.HashPassword(newPassword);
 			_userRepository.UpdatePassword(user.Email, hashed);
 
 			response["Success"] = true;

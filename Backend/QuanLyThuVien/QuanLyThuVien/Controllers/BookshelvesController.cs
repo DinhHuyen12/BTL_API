@@ -19,7 +19,7 @@ namespace QuanLyThuVien.Controllers
             return _bus.GetAllShelves();
         }
         [HttpGet("{id}")]
-        public Bookshelves Get(string id)
+        public Bookshelves Get(int id)
         {
             return _bus.GetBookshelves(id);
         }

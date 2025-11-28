@@ -1,13 +1,13 @@
 ﻿using System.Net;
 using System.Reflection.Metadata;
-using baiapi1.DAL.Interfaces;
-using baiapi1.DTO;
-using baiapi1.Models;
+using QuanLyThuVien.DAL.Interfaces;
+using QuanLyThuVien.DTO;
+using QuanLyThuVien.Models;
 using DAL;
 using DAL.Helper;
 using Microsoft.VisualBasic;
 
-namespace baiapi1.DAL
+namespace QuanLyThuVien.DAL
 {
     public class BookRepository : IBookRepository
     {
