@@ -31,6 +31,8 @@ namespace DAL.Interfaces
 		// ⭐ OPTIONAL: lấy user bằng username (Repository đang cần)
 		Users GetUserByUsername(string username);
 		List<Users> GetAllUsers();
+		bool UpdateUserRole(int userId, string role);
+
 
 	}
 }

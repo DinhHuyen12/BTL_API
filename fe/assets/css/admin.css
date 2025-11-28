@@ -1,0 +1,194 @@
+/* ==========================
+   RESET + FONT
+========================== */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f4f6f9;
+}
+
+/* ==========================
+   LOGIN
+========================== */
+.login-box {
+    width: 380px;
+    margin: 120px auto;
+    background: #fff;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-box h2 {
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    background: #fafafa;
+    transition: 0.2s;
+}
+
+.login-box input:focus {
+    border-color: #4a90e2;
+    background: #fff;
+}
+
+.login-box button {
+    width: 100%;
+    margin-top: 18px;
+    padding: 14px;
+    border: none;
+    background: #4a90e2;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 16px;
+}
+
+.login-box button:hover {
+    background: #357ABD;
+}
+
+/* ==========================
+   NAVBAR
+========================== */
+.navbar {
+    background: #ffffff;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #e3e3e3;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 500;
+}
+
+.navbar span {
+    font-weight: 600;
+    font-size: 18px;
+    color: #333;
+}
+
+.navbar button {
+    padding: 8px 16px;
+    background: #f05454;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.navbar button:hover {
+    background: #d94343;
+}
+
+/* ==========================
+   SIDEBAR
+========================== */
+.sidebar {
+    width: 230px;
+    background: #1f2a40;
+    height: 100vh;
+    padding-top: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: #fff;
+}
+
+.sidebar a {
+    display: block;
+    padding: 14px 25px;
+    color: #dbe1eb;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.25s;
+}
+
+.sidebar a:hover {
+    background: #23324f;
+    color: #ffffff;
+}
+
+/* ==========================
+   MAIN CONTENT
+========================== */
+.content {
+    margin-left: 250px;
+    padding: 110px 30px 30px 30px;
+}
+
+.content h1 {
+    font-size: 26px;
+    color: #333;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* ==========================
+   DASHBOARD CARDS
+========================== */
+.card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 350px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.12);
+}
+
+.card b {
+    font-size: 20px;
+    color: #4a90e2;
+}
+
+/* Icon style (emoji or icons) */
+.card::before {
+    content: "📚";
+    font-size: 35px;
+}
+
+/* Each card can have its own icon */
+.card:nth-child(2)::before {
+    content: "👥";
+}
+
+.card:nth-child(3)::before {
+    content: "💰";
+}
+
+/* ==========================
+   MOBILE
+========================== */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .content {
+        margin-left: 210px;
+    }
+
+    .card {
+        width: 100%;
+    }
+}

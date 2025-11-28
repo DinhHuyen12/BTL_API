@@ -105,6 +105,10 @@ namespace BLL
 		{
 			return _authRepository.GetAllUsers();
 		}
+		public bool UpdateUserRole(int userId, string role)
+		{
+			return _authRepository.UpdateUserRole(userId, role);
+		}
 
 	}
 }

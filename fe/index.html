@@ -1,325 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" ng-app="myApp">
 
-
-<!-- index.html  21 Nov 2019 03:44:50 GMT -->
 <head>
   <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Otika - Admin Dashboard Template</title>
-  <!-- General CSS Files -->
+  <title>Website Bán Sách</title>
   <link rel="stylesheet" href="assets/css/app.min.css">
-  <!-- Template CSS -->
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <!-- Custom style CSS -->
-  <link rel="stylesheet" href="assets/css/custom.css">
-  <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
-    <link rel="stylesheet" href="assets/bundles/izitoast/css/iziToast.min.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
 </head>
 
-<body>
-  <div class="loader"></div>
-  <div id="app">
-    <div class="main-wrapper main-wrapper-1">
-      <div class="navbar-bg"></div>
-      <nav class="navbar navbar-expand-lg main-navbar sticky">
-        <div class="form-inline mr-auto">
-          <ul class="navbar-nav mr-3">
-            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
-									collapse-btn"> <i data-feather="align-justify"></i></a></li>
-            <li><a href="#" class="nav-link nav-link-lg fullscreen-btn">
-                <i data-feather="maximize"></i>
-              </a></li>
-            <li>
-              <form class="form-inline mr-auto">
-                <div class="search-element">
-                  <input class="form-control" type="search" placeholder="Search" aria-label="Search" data-width="200">
-                  <button class="btn" type="submit">
-                    <i class="fas fa-search"></i>
-                  </button>
-                </div>
-              </form>
-            </li>
-          </ul>
-        </div>
-        <ul class="navbar-nav navbar-right">
-          
-          
-          <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assets/img/user.png"
-                class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
-            <div class="dropdown-menu dropdown-menu-right pullDown">
-              <div class="dropdown-title">Hello Sarah Smith</div>
-              <a href="profile.html" class="dropdown-item has-icon"> <i class="far
-										fa-user"></i> Profile
-              </a> <a href="timeline.html" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
-                Activities
-              </a> <a href="#" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
-                Settings
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="auth-login.html" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
-                Logout
-              </a>
-            </div>
-          </li>
+<body ng-controller="displayBook">
+  <header class="header">
+    <div class="header-top">
+      <img src="logo/logo.png" alt="Logo" class="logo">
+      <form id="search-form">
+        <input type="text" id="search-input" placeholder="Tìm kiếm sách hoặc tác giả...">
+        <button type="submit"><span>&#128269;</span></button>
+      </form>
+      <div class="header-right">
+        <button id="cart-btn">Giỏ hàng (<span id="cart-count">0</span>)</button>
+        <a href="#" class="login-link">Đăng ký / Đăng nhập</a>
+      </div>
+    </div>
+    <nav class="main-menu">
+      <span id="menu-title">&#9776; DANH MỤC SẢN PHẨM</span>
+    </nav>
+  </header>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="category-section">
+        <h3>DANH MỤC SẢN PHẨM</h3>
+        <ul id="category-list">
+          <li data-category="Tất cả"><b>Tất cả</b></li>
+          <li data-category="Sách Tham Khảo Cấp 3 (Lớp 10–12)">Sách Tham Khảo Cấp 3 (Lớp 10–12)</li>
+          <li data-category="Sách Luyện Thi THPT Quốc Gia">Sách Luyện Thi THPT Quốc Gia</li>
+          <li data-category="Sách Học Tốt">Sách Học Tốt</li>
+          <li data-category="Sách Ôn Tập Hè">Sách Ôn Tập Hè</li>
+          <li data-category="Sách Chuyên Đề Môn Học">Sách Chuyên Đề Môn Học</li>
+          <li data-category="Sách Bồi Dưỡng Học Sinh Giỏi">Sách Bồi Dưỡng Học Sinh Giỏi</li>
+          <li data-category="Tài Liệu Bộ Đề & Đề Thi Mẫu">Tài Liệu Bộ Đề & Đề Thi Mẫu</li>
+          <li data-category="Sách Ngoại Ngữ (Tiếng Anh, Nhật, Trung...)">Sách Ngoại Ngữ (Tiếng Anh, Nhật,
+            Trung...)</li>
+          <li data-category="Atlat, Bản Đồ, Sách Thực Hành">Atlat, Bản Đồ, Sách Thực Hành</li>
+          <li data-category="Combo Sách Theo Khối (A, B, C, D, D01...)">Combo Sách Theo Khối (A, B, C, D,
+            D01...)</li>
         </ul>
-      </nav>
-      <div class="main-sidebar sidebar-style-2">
-        <aside id="sidebar-wrapper">
-          <div class="sidebar-brand">
-            <a href="index.html"> <img alt="image" src="assets/img/logo.png" class="header-logo" /> <span
-                class="logo-name">Otika</span>
-            </a>
-          </div>
-          <ul class="sidebar-menu">
-            <li class="menu-header">Main</li>
-            <li class="dropdown active">
-              <a href="index.html" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i
-                  data-feather="briefcase"></i><span>Widgets</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="widget-chart.html">Chart Widgets</a></li>
-                <li><a class="nav-link" href="widget-data.html">Data Widgets</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="mail"></i><span>Email</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="email-inbox.html">Inbox</a></li>
-                <li><a class="nav-link" href="email-compose.html">Compose</a></li>
-                <li><a class="nav-link" href="email-read.html">read</a></li>
-              </ul>
-            </li>
-            <li class="menu-header">UI Elements</li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="copy"></i><span>Basic
-                  Components</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="alert.html">Alert</a></li>
-                <li><a class="nav-link" href="badge.html">Badge</a></li>
-              </ul>
-            </li>
-            <li><a class="nav-link" href="blank.html"><i data-feather="file"></i><span>Blank Page</span></a></li>
-            
-          </ul>
-        </aside>
       </div>
-      <!-- Main Content -->
-      <div class="main-content">
-        <section class="section">
-          <div class="row ">
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                          <h5 class="font-15">New Booking</h5>
-                          <h2 class="mb-3 font-18">258</h2>
-                          <p class="mb-0"><span class="col-green">10%</span> Increase</p>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                          <img src="assets/img/banner/1.png" alt="">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                          <h5 class="font-15"> Customers</h5>
-                          <h2 class="mb-3 font-18">1,287</h2>
-                          <p class="mb-0"><span class="col-orange">09%</span> Decrease</p>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                          <img src="assets/img/banner/2.png" alt="">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                          <h5 class="font-15">New Project</h5>
-                          <h2 class="mb-3 font-18">128</h2>
-                          <p class="mb-0"><span class="col-green">18%</span>
-                            Increase</p>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                          <img src="assets/img/banner/3.png" alt="">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                          <h5 class="font-15">Revenue</h5>
-                          <h2 class="mb-3 font-18">$48,697</h2>
-                          <p class="mb-0"><span class="col-green">42%</span> Increase</p>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                          <img src="assets/img/banner/4.png" alt="">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-        </section>
-        <div class="settingSidebar">
-          <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
-          </a>
-          <div class="settingSidebar-body ps-container ps-theme-default">
-            <div class=" fade show active">
-              <div class="setting-panel-header">Setting Panel
-              </div>
-              <div class="p-15 border-bottom">
-                <h6 class="font-medium m-b-10">Select Layout</h6>
-                <div class="selectgroup layout-color w-50">
-                  <label class="selectgroup-item">
-                    <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
-                    <span class="selectgroup-button">Light</span>
-                  </label>
-                  <label class="selectgroup-item">
-                    <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
-                    <span class="selectgroup-button">Dark</span>
-                  </label>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <h6 class="font-medium m-b-10">Sidebar Color</h6>
-                <div class="selectgroup selectgroup-pills sidebar-color">
-                  <label class="selectgroup-item">
-                    <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
-                    <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                      data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
-                  </label>
-                  <label class="selectgroup-item">
-                    <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
-                    <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                      data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
-                  </label>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <h6 class="font-medium m-b-10">Color Theme</h6>
-                <div class="theme-setting-options">
-                  <ul class="choose-theme list-unstyled mb-0">
-                    <li title="white" class="active">
-                      <div class="white"></div>
-                    </li>
-                    <li title="cyan">
-                      <div class="cyan"></div>
-                    </li>
-                    <li title="black">
-                      <div class="black"></div>
-                    </li>
-                    <li title="purple">
-                      <div class="purple"></div>
-                    </li>
-                    <li title="orange">
-                      <div class="orange"></div>
-                    </li>
-                    <li title="green">
-                      <div class="green"></div>
-                    </li>
-                    <li title="red">
-                      <div class="red"></div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <div class="theme-setting-options">
-                  <label class="m-b-0">
-                    <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                      id="mini_sidebar_setting">
-                    <span class="custom-switch-indicator"></span>
-                    <span class="control-label p-l-10">Mini Sidebar</span>
-                  </label>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <div class="theme-setting-options">
-                  <label class="m-b-0">
-                    <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                      id="sticky_header_setting">
-                    <span class="custom-switch-indicator"></span>
-                    <span class="control-label p-l-10">Sticky Header</span>
-                  </label>
-                </div>
-              </div>
-              <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
-                <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
-                  <i class="fas fa-undo"></i> Restore Default
-                </a>
-              </div>
-            </div>
-          </div>
+      <div class="subject-section">
+        <h3>MÔN HỌC</h3>
+        <ul id="subject-list">
+          <li data-subject="Tất cả"><b>Tất cả</b></li>
+          <li data-subject="Toán Học">Toán Học</li>
+          <li data-subject="Ngữ Văn">Ngữ Văn</li>
+          <li data-subject="Vật Lý">Vật Lý</li>
+          <li data-subject="Hóa Học">Hóa Học</li>
+          <li data-subject="Sinh Học">Sinh Học</li>
+          <li data-subject="Tiếng Anh">Tiếng Anh</li>
+          <li data-subject="Lịch Sử">Lịch Sử</li>
+          <li data-subject="Địa Lý">Địa Lý</li>
+          <li data-subject="GDCD">GDCD</li>
+        </ul>
+      </div>
+      <div class="subject-section">
+        <h3>GIÁ TIỀN</h3>
+        <ul id="subject-list">
+          <li data-subject="Tất cả"><b>Tất cả</b></li>
+          <li data-subject=" Giá dưới 50.000đ"> Giá dưới 50.000đ</li>
+          <li data-subject=" 50.000đ - 100.000đ"> 100.000đ - 200.000đ</li>
+          <li data-subject=" 100.000đ - 200.000đ"> 100.000đ - 200.000đ</li>
+          <li data-subject="200.000đ - 300.000đ">200.000đ - 300.000đ</li>
+          <li data-subject="300.000đ - 500.000đ">300.000đ - 500.000đ</li>
+          <li data-subject="500.000đ - 1.000.000đ">500.000đ - 1.000.000đ</li>
+          <li data-subject="Giá trên 1.000.000đ">Giá trên 1.000.000đ</li>
+        </ul>
+      </div>
+    </aside>
+    <main ng-app="myApp">
+      <h2 id="main-title">Tất cả sách</h2>
+      <div class="book-grid">
+        <div class="book-item" ng-repeat="book in books">
+          <img ng-src="{{ book.image }}" alt="{{ book.title }}">
+          <h3>{{ book.title }}</h3>
+          <p>Tác giả: {{ book.author }}</p>
+          <p>Thể loại: {{ book.category }}</p>
+          <p>Năm xuất bản: {{ book.publicationYear }}</p>
+          <button ng-click="addToCart(book)">Thêm vào giỏ</button>
         </div>
       </div>
-      <footer class="main-footer">
-        <div class="footer-left">
-          <a href="templateshub.net">Templateshub</a></a>
-        </div>
-        <div class="footer-right">
-        </div>
-      </footer>
+    </main>
+
+  </div>
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Giỏ hàng của bạn</h2>
+      <div id="cart-items"></div>
+      <button id="checkout-btn">Đặt mua</button>
     </div>
   </div>
-  <!-- General JS Scripts -->
-  <script src="assets/js/app.min.js"></script>
-  <!-- JS Libraies -->
-  <script src="assets/bundles/apexcharts/apexcharts.min.js"></script>
-  <!-- Page Specific JS File -->
-  <script src="assets/js/page/index.js"></script>
-  <!-- Template JS File -->
-  <script src="assets/js/scripts.js"></script>
-    <script src="assets/bundles/izitoast/js/iziToast.min.js"></script>
-  <!-- Custom JS File -->
-  <script src="assets/js/custom.js"></script>
-  <script src="js/auth-check.js"></script>
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="newsletter-section">
+        <img src="logo/logo.png" alt="Logo" class="logo">
 
+        <div class="newsletter-content">
+          <h3 class="newsletter-title">ĐĂNG KÝ NHẬN TIN</h3>
+          <p class="newsletter-subtitle">Nhận những tin mới nhất từ chúng tôi</p>
+          <div class="newsletter-form">
+            <input type="email" class="email-input" placeholder="Nhập email của bạn">
+            <button class="subscribe-btn">ĐĂNG KÝ →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-sections">
+        <div class="footer-section">
+          <h4 class="section-title">VỀ CHÚNG TÔI</h4>
+          <div class="section-content">
+            <p>Book Shop là thương hiệu chức thông tin các tiêu đề kích hoạt sách hàng cung cấp thêm tin hàng đầu.</p>
+            <div class="social-icons">
+              <a href="https://www.facebook.com/quoc.anh.936800" class="social-icon">f</a>
+              <a href="https://www.tiktok.com/@tranduyson2" class="social-icon">t</a>
+              <a href="http://instagram.com/" class="social-icon">in</a>
+              <a href="https://mail.google.com/mail/u/0/#inbox" class="social-icon">@</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="section-title">LIÊN KẾT</h4>
+          <ul class="section-links">
+            <li><a href="#">Về chúng tôi</a></li>
+            <li><a href="#">Điều khoản</a></li>
+            <li><a href="#">Liên hệ</a></li>
+            <li><a href="#">Tin tức</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="section-title">MÔN HỌC</h4>
+          <ul class="section-links">
+            <li><a href="#">Toán Học</a></li>
+            <li><a href="#">Ngữ Văn</a></li>
+            <li><a href="#">Vật Lý</a></li>
+            <li><a href="#">Hóa Học</a></li>
+            <li><a href="#">Sinh Học</a></li>
+            <li><a href="#">Tiếng Anh</a></li>
+            <li><a href="#">Lịch Sử</a></li>
+            <li><a href="#">Địa Lý</a></li>
+            <li><a href="#">GDCD</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="section-title">LIÊN HỆ</h4>
+          <ul class="contact-info">
+            <li>
+              <div class="contact-icon">📍</div>
+              Tân Trào-Thanh Miện-Hải Dương
+            </li>
+            <li>
+              <div class="contact-icon">📞</div>
+              0123 456 789
+            </li>
+            <li>
+              <div class="contact-icon">📞</div>
+              0123 456 789
+            </li>
+            <li>
+              <div class="contact-icon">✉</div>
+              tson@fed-edu.vn
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="assets/js/app.min.js"></script>
+<script src="assets/js/index.js"></script>
+<!-- JS Libraies -->
+<!-- Page Specific JS File -->
+<!-- Template JS File -->
+<script src="assets/js/scripts.js"></script>
+<script src="assets/bundles/izitoast/js/iziToast.min.js"></script>
+
+<!-- Custom JS File -->
+<script src="assets/js/custom.js"></script>
+<script src="js/api.js"></script>
+<script src="js/login.js"></script>
 </body>
-
-
-<!-- index.html  21 Nov 2019 03:47:04 GMT -->
-</html>

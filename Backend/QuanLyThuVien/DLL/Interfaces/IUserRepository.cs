@@ -19,5 +19,6 @@ namespace DAL.Interfaces
 
 		// Đổi mật khẩu mới
 		void UpdatePassword(string email, string passwordHash);
+		bool UpdateUserRole(int userId, string role);
 	}
 }

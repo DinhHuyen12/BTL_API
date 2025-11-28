@@ -132,6 +132,28 @@ namespace QuanLyThuVien.Controllers
 				user
 			});
 		}
+		[Authorize(Roles = "Admin")]
+		[HttpPut("update-role")]
+		public IActionResult UpdateRole([FromBody] Dictionary<string, string> payload)
+		{
+			if (!payload.ContainsKey("userId") || !payload.ContainsKey("role"))
+				return BadRequest(new { message = "Thiếu userId hoặc role" });
+
+			int userId = int.Parse(payload["userId"]);
+			string role = payload["role"];
+
+			bool ok = _authBusiness.UpdateUserRole(userId, role);
+
+			if (!ok)
+				return BadRequest(new { success = false, message = "Cập nhật role thất bại" });
+
+			return Ok(new
+			{
+				success = true,
+				message = "Cập nhật role thành công",
+				data = new { userId, role }
+			});
+		}
 		/// <summary>
 		/// Đăng ký user mới
 		/// </summary>
@@ -310,6 +332,7 @@ namespace QuanLyThuVien.Controllers
 			});
 		}
 
+	
 
 
 	}

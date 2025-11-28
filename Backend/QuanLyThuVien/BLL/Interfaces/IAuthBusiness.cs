@@ -28,7 +28,7 @@ namespace BLL.Interfaces
 		// ============================
 		Users GetUserByUsername(string username);
 		List<Users> GetAllUsers();
-
+		bool UpdateUserRole(int userId, string newRole);
 
 	}
 }

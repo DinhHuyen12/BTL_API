@@ -1,4 +1,6 @@
-﻿using BLL.Interfaces;
+﻿using BLL;
+using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +13,7 @@ namespace QuanLyThuVien.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly IUserService _userService;
+		private readonly IUserBusiness _userBusiness;
 
 		public UserController(IUserService service)
 		{
@@ -76,6 +79,28 @@ namespace QuanLyThuVien.Controllers
 			{
 				message = result["Message"],
 				data = result
+			});
+		}
+		[Authorize(Roles = "Admin")]
+		[HttpPut("update-role")]
+		public IActionResult UpdateRole([FromBody] Dictionary<string, string> payload)
+		{
+			if (!payload.ContainsKey("userId") || !payload.ContainsKey("role"))
+				return BadRequest(new { message = "Thiếu userId hoặc role" });
+
+			int userId = int.Parse(payload["userId"]);
+			string role = payload["role"];
+
+			bool ok = _userBusiness.UpdateUserRole(userId, role);
+
+			if (!ok)
+				return BadRequest(new { success = false, message = "Cập nhật role thất bại" });
+
+			return Ok(new
+			{
+				success = true,
+				message = "Cập nhật role thành công",
+				data = new { userId, role }
 			});
 		}
 	}
