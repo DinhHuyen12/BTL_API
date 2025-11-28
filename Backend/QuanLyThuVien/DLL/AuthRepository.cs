@@ -27,6 +27,9 @@ namespace DAL
 		{
 			_dbHelper = dbHelper;
 		}
+		// =====================================================================
+		// 1. TẠO JWT TOKEN
+		// =====================================================================
 		public string GenerateJwtToken(Users user)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
@@ -47,7 +50,95 @@ namespace DAL
 			var token = tokenHandler.CreateToken(tokenDescriptor);
 			return tokenHandler.WriteToken(token);
 		}
+		// =====================================================================
+		// 2. KIỂM TRA TOKEN (GIẢI MÃ + CHECK HẠN)
+		// =====================================================================
+		public Users ValidateJwtToken(string token)
+		{
+			if (string.IsNullOrEmpty(token))
+				return null;
 
+			try
+			{
+				var tokenHandler = new JwtSecurityTokenHandler();
+				var key = Encoding.UTF8.GetBytes(jwtSecret);
+
+				tokenHandler.ValidateToken(token, new TokenValidationParameters
+				{
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(key),
+
+					ValidateIssuer = false,
+					ValidateAudience = false,
+
+					ClockSkew = TimeSpan.Zero
+				},
+				out SecurityToken validatedToken);
+
+				var jwtToken = (JwtSecurityToken)validatedToken;
+
+				string username = jwtToken.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+
+				if (string.IsNullOrEmpty(username))
+					return null;
+
+				return GetUserByUsername(username);
+			}
+			catch (SecurityTokenExpiredException)
+			{
+				Console.WriteLine("Token expired!");
+				return null;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Token invalid: " + ex.Message);
+				return null;
+			}
+		}
+
+		// =====================================================================
+		// 3. LẤY USER THEO USERNAME
+		// =====================================================================
+		public Users GetUserByUsername(string username)
+		{
+			try
+			{
+				var inputParams = new Dictionary<string, object>
+				{
+					{ "@Username", username }
+				};
+
+				var dt = _dbHelper.ExecuteReaderWithOutput("Pro_GetUserByUsername", inputParams, null);
+
+				if (dt != null && dt.Rows.Count > 0)
+				{
+					DataRow row = dt.Rows[0];
+
+					return new Users
+					{
+						UserId = Convert.ToInt32(row["UserId"]),
+						Username = row["Username"].ToString(),
+						FullName = row["FullName"].ToString(),
+						Email = row["Email"].ToString(),
+						RoleId = Convert.ToInt32(row["RoleId"]),
+						RoleName = row.Table.Columns.Contains("RoleName")
+							? row["RoleName"].ToString()
+							: null
+					};
+				}
+
+				return null;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("GetUserByUsername error: " + ex.Message);
+				return null;
+			}
+		}
+
+		// =====================================================================
+		// 4. LOGIN
+		// =====================================================================
 		public Users Login(string username)
 		{
 			try
@@ -107,6 +198,9 @@ namespace DAL
 			}
 		}
 
+		// =====================================================================
+		// 5. TẠO USER
+		// =====================================================================
 		public Dictionary<string, object> CreateUser(Users user)
 		{
 			var response = new Dictionary<string, object>
@@ -158,7 +252,9 @@ namespace DAL
 
 			return response;
 		}
-
+		// =====================================================================
+		// 6. CẬP NHẬT USER
+		// =====================================================================
 		public Dictionary<string, object> UpdateUser(Users user)
 		{
 			var response = new Dictionary<string, object>
@@ -223,7 +319,9 @@ namespace DAL
 
 			return response;
 		}
-
+		// =====================================================================
+		// 7. XÓA USER
+		// =====================================================================
 		public Dictionary<string, object> DeleteUser(int userId)
 		{
 			var response = new Dictionary<string, object>
@@ -279,8 +377,12 @@ namespace DAL
 
 			return response;
 		}
-
-
+		// =====================================================================
+		// 8. GỬI OTP
+		// =====================================================================
+		// =====================================================================
+		// 9. XÁC MINH OTP
+		// =====================================================================
 		public bool GenerateTwoFactorCode(string email)
 		{
 			try
@@ -458,6 +560,58 @@ namespace DAL
 
 
 
+		// =======================================================
+		// ▌10. LẤY TẤT CẢ USER
+		// =======================================================
+		public List<Users> GetAllUsers()
+		{
+			var users = new List<Users>();
+
+			try
+			{
+				// Gọi SP không có tham số → dùng null
+				var dt = _dbHelper.ExcuteReader("Pro_GetAllUsers");
+
+				if (dt == null || dt.Rows.Count == 0)
+					return users;
+
+				foreach (DataRow row in dt.Rows)
+				{
+					var user = new Users();
+
+					user.UserId = row["UserId"] != DBNull.Value ? Convert.ToInt32(row["UserId"]) : 0;
+					user.Username = row["Username"]?.ToString();
+					user.FullName = row["FullName"]?.ToString();
+					user.Email = row["Email"]?.ToString();
+
+					user.RoleId = row["RoleId"] != DBNull.Value ? Convert.ToInt32(row["RoleId"]) : 0;
+
+					// RoleName có thể NULL hoặc không tồn tại
+					user.RoleName = dt.Columns.Contains("RoleName")
+									? row["RoleName"]?.ToString()
+									: null;
+
+
+
+					users.Add(user);
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("GetAllUsers error: " + ex.Message);
+				return new List<Users>();
+			}
+
+			return users;
+		}
+
+
+		// =====================================================================
+		// 9. XÁC MINH OTP
+		// =====================================================================
+
+
+
 		public bool VerifyTwoFactorCode(string email, string code)
 		{
 			try
@@ -489,6 +643,28 @@ namespace DAL
 				return false;
 			}
 		}
+		public bool UpdateUserRole(int userId, string role)
+		{
+			var inputParams = new Dictionary<string, object>
+	{
+		{ "@UserId", userId },
+		{ "@Role", role }
+	};
+
+			var result = _dbHelper.ExcuteNonQuery(
+				"sp_update_user_role",    // 👈 phải là stored procedure
+				inputParams
+			);
+
+			// Kiểm tra xem rowsAffected có tồn tại không
+			if (result.ContainsKey("rowsAffected"))
+			{
+				return Convert.ToInt32(result["rowsAffected"]) > 0;
+			}
+
+			return false;
+		}
+
+
 	}
-	
 }

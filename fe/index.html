@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi" ng-app="myApp">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Website Bán Sách</title>
+  <link rel="stylesheet" href="assets/css/app.min.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+</head>
+
+<body ng-controller="displayBook">
+  <header class="header">
+    <div class="header-top">
+      <img src="logo/logo.png" alt="Logo" class="logo">
+      <form id="search-form">
+        <input type="text" id="search-input" placeholder="Tìm kiếm sách hoặc tác giả...">
+        <button type="submit"><span>&#128269;</span></button>
+      </form>
+      <div class="header-right">
+        <button id="cart-btn">Giỏ hàng (<span id="cart-count">0</span>)</button>
+        <a href="#" class="login-link">Đăng ký / Đăng nhập</a>
+      </div>
+    </div>
+    <nav class="main-menu">
+      <span id="menu-title">&#9776; DANH MỤC SẢN PHẨM</span>
+    </nav>
+  </header>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="category-section">
+        <h3>DANH MỤC SẢN PHẨM</h3>
+        <ul id="category-list">
+          <li data-category="Tất cả"><b>Tất cả</b></li>
+          <li data-category="Sách Tham Khảo Cấp 3 (Lớp 10–12)">Sách Tham Khảo Cấp 3 (Lớp 10–12)</li>
+          <li data-category="Sách Luyện Thi THPT Quốc Gia">Sách Luyện Thi THPT Quốc Gia</li>
+          <li data-category="Sách Học Tốt">Sách Học Tốt</li>
+          <li data-category="Sách Ôn Tập Hè">Sách Ôn Tập Hè</li>
+          <li data-category="Sách Chuyên Đề Môn Học">Sách Chuyên Đề Môn Học</li>
+          <li data-category="Sách Bồi Dưỡng Học Sinh Giỏi">Sách Bồi Dưỡng Học Sinh Giỏi</li>
+          <li data-category="Tài Liệu Bộ Đề & Đề Thi Mẫu">Tài Liệu Bộ Đề & Đề Thi Mẫu</li>
+          <li data-category="Sách Ngoại Ngữ (Tiếng Anh, Nhật, Trung...)">Sách Ngoại Ngữ (Tiếng Anh, Nhật,
+            Trung...)</li>
+          <li data-category="Atlat, Bản Đồ, Sách Thực Hành">Atlat, Bản Đồ, Sách Thực Hành</li>
+          <li data-category="Combo Sách Theo Khối (A, B, C, D, D01...)">Combo Sách Theo Khối (A, B, C, D,
+            D01...)</li>
+        </ul>
+      </div>
+      <div class="subject-section">
+        <h3>MÔN HỌC</h3>
+        <ul id="subject-list">
+          <li data-subject="Tất cả"><b>Tất cả</b></li>
+          <li data-subject="Toán Học">Toán Học</li>
+          <li data-subject="Ngữ Văn">Ngữ Văn</li>
+          <li data-subject="Vật Lý">Vật Lý</li>
+          <li data-subject="Hóa Học">Hóa Học</li>
+          <li data-subject="Sinh Học">Sinh Học</li>
+          <li data-subject="Tiếng Anh">Tiếng Anh</li>
+          <li data-subject="Lịch Sử">Lịch Sử</li>
+          <li data-subject="Địa Lý">Địa Lý</li>
+          <li data-subject="GDCD">GDCD</li>
+        </ul>
+      </div>
+      <div class="subject-section">
+        <h3>GIÁ TIỀN</h3>
+        <ul id="subject-list">
+          <li data-subject="Tất cả"><b>Tất cả</b></li>
+          <li data-subject=" Giá dưới 50.000đ"> Giá dưới 50.000đ</li>
+          <li data-subject=" 50.000đ - 100.000đ"> 100.000đ - 200.000đ</li>
+          <li data-subject=" 100.000đ - 200.000đ"> 100.000đ - 200.000đ</li>
+          <li data-subject="200.000đ - 300.000đ">200.000đ - 300.000đ</li>
+          <li data-subject="300.000đ - 500.000đ">300.000đ - 500.000đ</li>
+          <li data-subject="500.000đ - 1.000.000đ">500.000đ - 1.000.000đ</li>
+          <li data-subject="Giá trên 1.000.000đ">Giá trên 1.000.000đ</li>
+        </ul>
+      </div>
+    </aside>
+    <main ng-app="myApp">
+      <h2 id="main-title">Tất cả sách</h2>
+      <div class="book-grid">
+        <div class="book-item" ng-repeat="book in books">
+          <img ng-src="{{ book.image }}" alt="{{ book.title }}">
+          <h3>{{ book.title }}</h3>
+          <p>Tác giả: {{ book.author }}</p>
+          <p>Thể loại: {{ book.category }}</p>
+          <p>Năm xuất bản: {{ book.publicationYear }}</p>
+          <button ng-click="addToCart(book)">Thêm vào giỏ</button>
+        </div>
+      </div>
+    </main>
+
+  </div>
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Giỏ hàng của bạn</h2>
+      <div id="cart-items"></div>
+      <button id="checkout-btn">Đặt mua</button>
+    </div>
+  </div>
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="newsletter-section">
+        <img src="logo/logo.png" alt="Logo" class="logo">
+
+        <div class="newsletter-content">
+          <h3 class="newsletter-title">ĐĂNG KÝ NHẬN TIN</h3>
+          <p class="newsletter-subtitle">Nhận những tin mới nhất từ chúng tôi</p>
+          <div class="newsletter-form">
+            <input type="email" class="email-input" placeholder="Nhập email của bạn">
+            <button class="subscribe-btn">ĐĂNG KÝ →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-sections">
+        <div class="footer-section">
+          <h4 class="section-title">VỀ CHÚNG TÔI</h4>
+          <div class="section-content">
+            <p>Book Shop là thương hiệu chức thông tin các tiêu đề kích hoạt sách hàng cung cấp thêm tin hàng đầu.</p>
+            <div class="social-icons">
+              <a href="https://www.facebook.com/quoc.anh.936800" class="social-icon">f</a>
+              <a href="https://www.tiktok.com/@tranduyson2" class="social-icon">t</a>
+              <a href="http://instagram.com/" class="social-icon">in</a>
+              <a href="https://mail.google.com/mail/u/0/#inbox" class="social-icon">@</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="section-title">LIÊN KẾT</h4>
+          <ul class="section-links">
+            <li><a href="#">Về chúng tôi</a></li>
+            <li><a href="#">Điều khoản</a></li>
+            <li><a href="#">Liên hệ</a></li>
+            <li><a href="#">Tin tức</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="section-title">MÔN HỌC</h4>
+          <ul class="section-links">
+            <li><a href="#">Toán Học</a></li>
+            <li><a href="#">Ngữ Văn</a></li>
+            <li><a href="#">Vật Lý</a></li>
+            <li><a href="#">Hóa Học</a></li>
+            <li><a href="#">Sinh Học</a></li>
+            <li><a href="#">Tiếng Anh</a></li>
+            <li><a href="#">Lịch Sử</a></li>
+            <li><a href="#">Địa Lý</a></li>
+            <li><a href="#">GDCD</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="section-title">LIÊN HỆ</h4>
+          <ul class="contact-info">
+            <li>
+              <div class="contact-icon">📍</div>
+              Tân Trào-Thanh Miện-Hải Dương
+            </li>
+            <li>
+              <div class="contact-icon">📞</div>
+              0123 456 789
+            </li>
+            <li>
+              <div class="contact-icon">📞</div>
+              0123 456 789
+            </li>
+            <li>
+              <div class="contact-icon">✉</div>
+              tson@fed-edu.vn
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="assets/js/app.min.js"></script>
+<script src="assets/js/index.js"></script>
+<!-- JS Libraies -->
+<!-- Page Specific JS File -->
+<!-- Template JS File -->
+<script src="assets/js/scripts.js"></script>
+<script src="assets/bundles/izitoast/js/iziToast.min.js"></script>
+
+<!-- Custom JS File -->
+<script src="assets/js/custom.js"></script>
+<script src="js/api.js"></script>
+<script src="js/login.js"></script>
+</body>

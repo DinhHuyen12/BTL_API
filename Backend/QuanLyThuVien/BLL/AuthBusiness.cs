@@ -86,6 +86,29 @@ namespace BLL
 		}
 
 
+		// =========================
+		// VALIDATE TOKEN (CHECK EXP)
+		// =========================
+		public Users ValidateJwtToken(string token)
+		{
+			return _authRepository.ValidateJwtToken(token);
+		}
+
+		// =========================
+		// LẤY USER THEO USERNAME
+		// =========================
+		public Users GetUserByUsername(string username)
+		{
+			return _authRepository.GetUserByUsername(username);
+		}
+		public List<Users> GetAllUsers()
+		{
+			return _authRepository.GetAllUsers();
+		}
+		public bool UpdateUserRole(int userId, string role)
+		{
+			return _authRepository.UpdateUserRole(userId, role);
+		}
 
 	}
 }

@@ -108,5 +108,26 @@ namespace DAL
 				RoleId = Convert.ToInt32(row["RoleId"])
 			};
 		}
+		public bool UpdateUserRole(int userId, string role)
+		{
+			var inputParams = new Dictionary<string, object>
+	{
+		{ "@UserId", userId },
+		{ "@Role", role }
+	};
+
+			var result = _dbHelper.ExcuteNonQuery(
+				"sp_update_user_role",    // 👈 phải là stored procedure
+				inputParams
+			);
+
+			// Kiểm tra xem rowsAffected có tồn tại không
+			if (result.ContainsKey("rowsAffected"))
+			{
+				return Convert.ToInt32(result["rowsAffected"]) > 0;
+			}
+
+			return false;
+		}
 	}
 }

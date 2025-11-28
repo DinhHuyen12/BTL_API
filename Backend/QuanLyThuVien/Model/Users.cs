@@ -10,7 +10,8 @@ namespace Model
     {
         public int UserId { get; set; }
         public string Username { get; set; }
-        public string PasswordHash { get; set; } 
+
+		public string PasswordHash { get; set; } 
         public string FullName { get; set; }
         public string Email { get; set; }
         public int RoleId { get; set; }
@@ -18,6 +19,7 @@ namespace Model
 		public string? PasswordResetToken { get; set; }
 		public DateTime? TokenExpiry { get; set; }
 		public string? token { get; set; }
+
 
 	}
 }

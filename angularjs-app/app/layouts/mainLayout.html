@@ -1,0 +1,17 @@
+<div id="app" ng-controller="LayoutController">
+    <div class="main-wrapper main-wrapper-1">
+
+        <div ng-include="'app/layouts/header.html'"></div>
+
+        <div class="main-sidebar sidebar-style-2">
+            <div ng-include="'app/layouts/sidebar.html'"></div>
+        </div>
+
+        <div class="main-content">
+            <div ng-view></div>
+        </div>
+
+        <div ng-include="'app/layouts/footer.html'"></div>
+
+    </div>
+</div>

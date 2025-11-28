@@ -42,7 +42,7 @@ namespace BLL
            return _repo.GetAllShelves();
         }
 
-        public Bookshelves GetBookshelves(string id)
+        public Bookshelves GetBookshelves(int id)
         {
             return _repo.GetBookshelves(id);
         }

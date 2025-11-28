@@ -25,6 +25,14 @@ namespace DAL.Interfaces
 		string GenerateJwtToken(Users user);
 
 
+		// ⭐ NEW: KIỂM TRA TOKEN (GIẢI MÃ JWT)
+		Users ValidateJwtToken(string token);
+
+		// ⭐ OPTIONAL: lấy user bằng username (Repository đang cần)
+		Users GetUserByUsername(string username);
+		List<Users> GetAllUsers();
+		bool UpdateUserRole(int userId, string role);
+
 
 	}
 }

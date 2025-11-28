@@ -1,4 +1,4 @@
-﻿namespace baiapi1.DTO
+﻿namespace QuanLyThuVien.DTO
 {
     public class BorrowBookDTO
     {

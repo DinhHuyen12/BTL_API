@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/app.min.css">
+    <link rel="stylesheet" href="assets/bundles/bootstrap-social/bootstrap-social.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+    <link rel="stylesheet" href="assets/bundles/izitoast/css/iziToast.min.css">
+
+</head>
+
+<body>
+
+    <!-- LOGIN PAGE -->
+    <div id="login-page">
+        <div class="login-box">
+            <h2>Đăng nhập Admin</h2>
+            <input id="user" type="text" placeholder="Tài khoản">
+            <input id="pass" type="password" placeholder="Mật khẩu">
+            <button onclick="login()">Đăng nhập</button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div id="dashboard-page" style="display:none;">
+
+        <div class="navbar">
+            <span>Admin Dashboard</span>
+            <button onclick="logout()">Đăng xuất</button>
+        </div>
+
+        <div class="sidebar">
+            <a href="#">Dashboard</a>
+            <a href="#">Quản lý người dùng</a>
+            <a href="#">Quản lý sản phẩm</a>
+            <a href="#">Cài đặt</a>
+        </div>
+
+        <div class="content">
+            <h1>Chào mừng bạn quay lại!</h1>
+
+            <div class="card">📌 Tổng số khách hàng: <b id="c1">0</b></div>
+            <div class="card">📌 Đơn hàng trong ngày: <b id="c2">0</b></div>
+            <div class="card">📌 Doanh thu hôm nay: <b id="c3">0</b></div>
+        </div>
+
+    </div>
+
+    <script src="assets/js/admin.js"></script>
+    <!-- General JS Scripts -->
+    <script src="assets/js/app.min.js"></script>
+    <!-- JS Libraies -->
+    <!-- Page Specific JS File -->
+    <!-- Template JS File -->
+    <script src="assets/js/scripts.js"></script>
+    <script src="assets/bundles/izitoast/js/iziToast.min.js"></script>
+    
+    <!-- Custom JS File -->
+    <script src="assets/js/custom.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/login.js"></script>
+</body>
+
+</html>

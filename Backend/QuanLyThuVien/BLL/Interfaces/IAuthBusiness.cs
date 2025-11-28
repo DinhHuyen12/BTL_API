@@ -21,6 +21,14 @@ namespace BLL.Interfaces
 		bool GenerateTwoFactorCode(string email);
 		Users GetUserByEmail(string email);
 		string GenerateJwtToken(Users user);
+		Users ValidateJwtToken(string token);
+
+		// ============================
+		// GET USER BY USERNAME
+		// ============================
+		Users GetUserByUsername(string username);
+		List<Users> GetAllUsers();
+		bool UpdateUserRole(int userId, string newRole);
 
 	}
 }

@@ -17,9 +17,17 @@ namespace DAL
             _data = data;
         }
 
-     
+		public Bookshelves GetBookshelves(int id)
+		{
+			string msg = string.Empty;
+			string q = "select * from Bookshelves where BookshelfId = '" + id + "'";
+			var dt = _data.ExecuteQueryToDataTable(q, out msg);
+			return dt.ConvertTo<Bookshelves>().FirstOrDefault();
+		}
 
-        public bool AddBookshelves(Bookshelves bookshelves)
+
+
+		public bool AddBookshelves(Bookshelves bookshelves)
         {
             try
             {

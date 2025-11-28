@@ -1,9 +1,9 @@
-﻿using baiapi1.DAL.Interfaces;
-using baiapi1.DTO;
-using baiapi1.Models;
+﻿using QuanLyThuVien.DAL.Interfaces;
+using QuanLyThuVien.DTO;
+using QuanLyThuVien.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace baiapi1.Controllers
+namespace QuanLyThuVien.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

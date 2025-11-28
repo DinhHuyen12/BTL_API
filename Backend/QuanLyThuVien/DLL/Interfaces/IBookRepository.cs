@@ -1,8 +1,8 @@
-﻿using baiapi1.DTO;
-using baiapi1.Models;
+﻿using QuanLyThuVien.DTO;
+using QuanLyThuVien.Models;
 using Microsoft.VisualBasic;
 
-namespace baiapi1.DAL.Interfaces
+namespace QuanLyThuVien.DAL.Interfaces
 {
     public interface IBookRepository
     {
