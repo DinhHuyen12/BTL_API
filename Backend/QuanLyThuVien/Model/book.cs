@@ -1,4 +1,4 @@
-﻿namespace QuanLyThuVien.Models
+﻿namespace Models
 {
     public class book
     {

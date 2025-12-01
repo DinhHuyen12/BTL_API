@@ -9,9 +9,101 @@ namespace DAL.Helper
 {
     public class DatabaseHelper : IDatabaseHelper
     {
+		protected string connectString = @"Server=HYSHR;Database=QuanLyThuVien;Trusted_Connection=True;TrustServerCertificate=True;";
+		SqlConnection connection;
 
-        //Connection String
-        public string StrConnection { get; set; }
+		public DatabaseHelper()
+		{
+			connection = new SqlConnection(connectString);
+		}
+		public DatabaseHelper(string connectStr)
+		{
+			this.connectString = connectStr;
+			connection = new SqlConnection(connectString);
+		}
+		public bool Open()
+		{
+			try
+			{
+				if (connection.State != ConnectionState.Open)
+				{
+					connection.Open();
+				}
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Open connection error: " + ex.Message);
+				return false;
+			}
+		}
+
+		public void Close()
+		{
+			if (connection.State != ConnectionState.Closed)
+			{
+				connection.Close();
+			}
+		}
+		public Dictionary<string, object> ExcuteNonQuery(
+	  string procedureName,
+	  Dictionary<string, object> inputParams,
+	  List<SqlParameter> outputParams = null)
+		{
+			Dictionary<string, object> result = new Dictionary<string, object>();
+			try
+			{
+				using (SqlCommand cmd = new SqlCommand(procedureName, connection))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					Open();
+
+					// Input params
+					if (inputParams != null)
+					{
+						foreach (var kv in inputParams)
+						{
+							cmd.Parameters.AddWithValue(kv.Key, kv.Value ?? DBNull.Value);
+						}
+					}
+
+					// Output params
+					if (outputParams != null)
+					{
+						foreach (var p in outputParams)
+						{
+							p.Direction = ParameterDirection.Output;
+							cmd.Parameters.Add(p);
+						}
+					}
+
+					// Thực thi và lấy số dòng bị ảnh hưởng
+					int rowsAffected = cmd.ExecuteNonQuery();
+					result["rowsAffected"] = rowsAffected;
+
+					// Lấy giá trị output parameters
+					if (outputParams != null)
+					{
+						foreach (var p in outputParams)
+						{
+							result[p.ParameterName] = p.Value;
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				result["error"] = ex.Message;
+			}
+			finally
+			{
+				Close();
+			}
+			return result;
+		}
+
+		//Connection String
+		public string StrConnection { get; set; }
         //Connection
         public SqlConnection sqlConnection { get; set; }
         //NpgsqlTransaction 
@@ -848,75 +940,141 @@ namespace DAL.Helper
             }
             return result;
         }
-        /// <summary>
-        /// Execute Procedure return List Object Results
-        /// </summary>
-        /// <param name="msgError">String.Empty when run query success or Message Error when run query happen issue</param>
-        /// <param name="sprocedureName">Procedure Name</param>
-        /// <param name="outputParamCountNumber">outputParam Count Number</param>
-        /// <param name="paramObjects">List Param Objects, Each Item include 'ParamName' and 'ParamValue'</param>
-        /// <returns>List Object Result in query</returns>
-        public List<Object> ReturnValuesFromExecuteSProcedure(out string msgError, string sprocedureName, int outputParamCountNumber, params object[] paramObjects)
-        {
-            List<Object> result = new List<Object>();
-            SqlConnection connection = new SqlConnection(StrConnection);
-            try
-            {
-                SqlCommand cmd = new SqlCommand { CommandType = CommandType.StoredProcedure, CommandText = sprocedureName };
-                connection.Open();
-                cmd.Connection = connection;
+		/// <summary>
+		/// Execute Procedure return List Object Results
+		/// </summary>
+		/// <param name="msgError">String.Empty when run query success or Message Error when run query happen issue</param>
+		/// <param name="sprocedureName">Procedure Name</param>
+		/// <param name="outputParamCountNumber">outputParam Count Number</param>
+		/// <param name="paramObjects">List Param Objects, Each Item include 'ParamName' and 'ParamValue'</param>
+		/// <returns>List Object Result in query</returns>
+		//public List<Object> ReturnValuesFromExecuteSProcedure(out string msgError, string sprocedureName, int outputParamCountNumber, params object[] paramObjects)
+		//{
+		//    List<Object> result = new List<Object>();
+		//    SqlConnection connection = new SqlConnection(StrConnection);
+		//    try
+		//    {
+		//        SqlCommand cmd = new SqlCommand { CommandType = CommandType.StoredProcedure, CommandText = sprocedureName };
+		//        connection.Open();
+		//        cmd.Connection = connection;
 
-                int numberOutput = outputParamCountNumber * 2;
+		//        int numberOutput = outputParamCountNumber * 2;
 
-                int parameterInput = (paramObjects.Length - numberOutput) / 2;
+		//        int parameterInput = (paramObjects.Length - numberOutput) / 2;
 
-                int j = 0;
-                for (int i = 0; i < parameterInput; i++)
-                {
-                    string paramName = Convert.ToString(paramObjects[j++]);
-                    object value = paramObjects[j++];
-                    if (paramName.ToLower().Contains("json"))
-                    {
-                        cmd.Parameters.Add(new SqlParameter()
-                        {
-                            ParameterName = paramName,
-                            Value = value ?? DBNull.Value,
-                            SqlDbType = SqlDbType.NVarChar
-                        });
-                    }
-                    else
-                    {
-                        cmd.Parameters.Add(new SqlParameter(paramName, value ?? DBNull.Value));
-                    }
-                }
+		//        int j = 0;
+		//        for (int i = 0; i < parameterInput; i++)
+		//        {
+		//            string paramName = Convert.ToString(paramObjects[j++]);
+		//            object value = paramObjects[j++];
+		//            if (paramName.ToLower().Contains("json"))
+		//            {
+		//                cmd.Parameters.Add(new SqlParameter()
+		//                {
+		//                    ParameterName = paramName,
+		//                    Value = value ?? DBNull.Value,
+		//                    SqlDbType = SqlDbType.NVarChar
+		//                });
+		//            }
+		//            else
+		//            {
+		//                cmd.Parameters.Add(new SqlParameter(paramName, value ?? DBNull.Value));
+		//            }
+		//        }
 
-                for (int i = parameterInput * 2 - numberOutput; i < parameterInput * 2; i++)
-                {
-                    string paramName = Convert.ToString(paramObjects[j++]);
-                    object value = paramObjects[j++];
-                    cmd.Parameters.Add(new SqlParameter(paramName, value ?? DBNull.Value) { Direction = ParameterDirection.Output, Size = 1000, IsNullable = true });
-                }
+		//        for (int i = parameterInput * 2 - numberOutput; i < parameterInput * 2; i++)
+		//        {
+		//            string paramName = Convert.ToString(paramObjects[j++]);
+		//            object value = paramObjects[j++];
+		//            cmd.Parameters.Add(new SqlParameter(paramName, value ?? DBNull.Value) { Direction = ParameterDirection.Output, Size = 1000, IsNullable = true });
+		//        }
 
-                cmd.ExecuteNonQuery();
+		//        cmd.ExecuteNonQuery();
 
-                foreach (SqlParameter sqlParameter in cmd.Parameters)
-                    if (sqlParameter.Direction == ParameterDirection.Output)
-                        result.Add(sqlParameter.Value);
+		//        foreach (SqlParameter sqlParameter in cmd.Parameters)
+		//            if (sqlParameter.Direction == ParameterDirection.Output)
+		//                result.Add(sqlParameter.Value);
 
-                cmd.Dispose();
-                msgError = "";
-            }
-            catch (Exception exception)
-            {
-                msgError = exception.ToString();
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return result;
-        }
-        #endregion
-    }
+		//        cmd.Dispose();
+		//        msgError = "";
+		//    }
+		//    catch (Exception exception)
+		//    {
+		//        msgError = exception.ToString();
+		//    }
+		//    finally
+		//    {
+		//        connection.Close();
+		//    }
+		//    return result;
+		//}
+		public List<object> ReturnValuesFromExecuteSProcedure(
+	out string msgError,
+	string sprocedureName,
+	int outputParamCountNumber,
+	params object[] paramObjects)
+		{
+			msgError = "";
+			var result = new List<object>();
+
+			try
+			{
+				using (var connection = new SqlConnection(StrConnection))
+				{
+					using (var cmd = new SqlCommand(sprocedureName, connection))
+					{
+						cmd.CommandType = CommandType.StoredProcedure;
+
+						connection.Open();
+
+						int totalParams = paramObjects.Length / 2;
+						int inputParams = totalParams - outputParamCountNumber;
+
+						int j = 0;
+
+						// 1) Add INPUT PARAMS
+						for (int i = 0; i < inputParams; i++)
+						{
+							string name = paramObjects[j++].ToString();
+							object value = paramObjects[j++];
+
+							cmd.Parameters.AddWithValue(name, value ?? DBNull.Value);
+						}
+
+						// 2) Add OUTPUT PARAMS
+						for (int i = 0; i < outputParamCountNumber; i++)
+						{
+							string name = paramObjects[j++].ToString();
+							cmd.Parameters.Add(new SqlParameter(name, SqlDbType.NVarChar, 1000)
+							{
+								Direction = ParameterDirection.Output
+							});
+
+							j++; // skip dummy value
+						}
+
+						cmd.ExecuteNonQuery();
+
+						// 3) GET OUTPUT values
+						foreach (SqlParameter p in cmd.Parameters)
+						{
+							if (p.Direction == ParameterDirection.Output)
+							{
+								result.Add(p.Value);
+							}
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				msgError = ex.ToString();
+			}
+
+			return result;
+		}
+
+		#endregion
+	}
 
 }

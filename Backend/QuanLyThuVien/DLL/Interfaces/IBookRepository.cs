@@ -1,8 +1,8 @@
 ﻿using QuanLyThuVien.DTO;
-using QuanLyThuVien.Models;
+using Models;
 using Microsoft.VisualBasic;
 
-namespace QuanLyThuVien.DAL.Interfaces
+namespace DAL.Interfaces
 {
     public interface IBookRepository
     {

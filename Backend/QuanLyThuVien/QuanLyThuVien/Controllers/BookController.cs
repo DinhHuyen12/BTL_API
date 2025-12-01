@@ -1,6 +1,6 @@
-﻿using QuanLyThuVien.DAL.Interfaces;
+﻿using DAL.Interfaces;
 using QuanLyThuVien.DTO;
-using QuanLyThuVien.Models;
+using Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace QuanLyThuVien.Controllers
