@@ -1,13 +1,13 @@
 ﻿using System.Net;
 using System.Reflection.Metadata;
-using QuanLyThuVien.DAL.Interfaces;
+using DAL.Interfaces;
 using QuanLyThuVien.DTO;
-using QuanLyThuVien.Models;
+using Models;
 using DAL;
 using DAL.Helper;
 using Microsoft.VisualBasic;
 
-namespace QuanLyThuVien.DAL
+namespace DAL
 {
     public class BookRepository : IBookRepository
     {

@@ -13,7 +13,8 @@ namespace DAL.Helper
     }
     public interface IDatabaseHelper
     {
-        void SetConnectionString(string connectionString);
+		Dictionary<string, object> ExcuteNonQuery(string procedureName, Dictionary<string, object> inputParams, List<SqlParameter> outputParams = null);
+		void SetConnectionString(string connectionString);
         /// <summary>
         /// Open Connection to PostGresDB
         /// </summary>
